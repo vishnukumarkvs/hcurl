@@ -37,34 +37,34 @@ var postCmd = &cobra.Command{
 			requestBody = []byte(body)
 		}
 
-		req, err := http.NewRequest("POST", url, strings.NewReader(string(requestBody)))
-
-		if err != nil {
-			fmt.Println("Error creating request: ", err)
-			return
-		}
-
-		req.Header.Set("Content-Type", "application/json")
-
-		headers := strings.Split(headers, ",")
-		for _, h := range headers {
-			h = strings.TrimSpace(h)
-			parts := strings.SplitN(h, ":", 2)
-			if len(parts) == 2 {
-				key := strings.TrimSpace(parts[0])
-				value := strings.TrimSpace(parts[1])
-				req.Header.Set(key, value)
-			}
-		}
-
 		var wg sync.WaitGroup
 		wg.Add(n)
-
-		client := &http.Client{}
 
 		for i := 0; i < n; i++ {
 			go func() {
 				defer wg.Done()
+
+				req, err := http.NewRequest("POST", url, strings.NewReader(string(requestBody)))
+
+				if err != nil {
+					fmt.Println("Error creating request: ", err)
+					return
+				}
+
+				req.Header.Set("Content-Type", "application/json")
+
+				headers := strings.Split(headers, ",")
+				for _, h := range headers {
+					h = strings.TrimSpace(h)
+					parts := strings.SplitN(h, ":", 2)
+					if len(parts) == 2 {
+						key := strings.TrimSpace(parts[0])
+						value := strings.TrimSpace(parts[1])
+						req.Header.Set(key, value)
+					}
+				}
+
+				client := &http.Client{}
 
 				response, err := client.Do(req)
 				if err != nil {
