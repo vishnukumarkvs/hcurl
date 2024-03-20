@@ -23,6 +23,7 @@ import (
 )
 
 var n int
+var headers string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -60,4 +61,5 @@ func init() {
 	// when this action is called directly.
 	// rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 	rootCmd.PersistentFlags().IntVarP(&n, "n", "n", 1, "Number of requests to send")
+	rootCmd.PersistentFlags().StringVarP(&headers, "header", "H", "", "Pass headers here. Ex:- \"Content-Type: application/json, Authorization: Bearer xxx, x-api-key: xxxx\" etc")
 }

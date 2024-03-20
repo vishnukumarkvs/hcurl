@@ -36,26 +36,47 @@ var postCmd = &cobra.Command{
 		} else {
 			requestBody = []byte(body)
 		}
+
+		req, err := http.NewRequest("POST", url, strings.NewReader(string(requestBody)))
+
+		if err != nil {
+			fmt.Println("Error creating request: ", err)
+			return
+		}
+
+		req.Header.Set("Content-Type", "application/json")
+
+		headers := strings.Split(headers, ",")
+		for _, h := range headers {
+			h = strings.TrimSpace(h)
+			parts := strings.SplitN(h, ":", 2)
+			if len(parts) == 2 {
+				key := strings.TrimSpace(parts[0])
+				value := strings.TrimSpace(parts[1])
+				req.Header.Set(key, value)
+			}
+		}
+
 		var wg sync.WaitGroup
 		wg.Add(n)
+
+		client := &http.Client{}
 
 		for i := 0; i < n; i++ {
 			go func() {
 				defer wg.Done()
-				response, err := http.Post(url, "application/json", strings.NewReader(string(requestBody)))
+
+				response, err := client.Do(req)
 				if err != nil {
-					fmt.Println("Error: ", err)
+					fmt.Println("Not able to send request: ", err)
 					return
 				}
+
 				defer response.Body.Close()
 
 				respBody, err := io.ReadAll(response.Body)
-				if err != nil {
-					fmt.Println("Error reading response: ", err)
-					return
-				}
-				fmt.Println("Response status: ", response.Status)
-				fmt.Println("Response Body", string(respBody))
+
+				fmt.Printf("Response status: %s\n Response Body: %s\n", response.Status, string(respBody))
 			}()
 		}
 		wg.Wait()
