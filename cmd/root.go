@@ -29,15 +29,11 @@ var headers string
 var rootCmd = &cobra.Command{
 	Use:   "hcurl",
 	Short: "hcurl is a command line tool primarily built for testing http(s) url endpoints.",
-	Long: `hcurl, short for "HTTP cURL", stands as a simple command-line utility designed with a primary focus on the testing and analysis of http(s) url endpoints. 
-	
-	
-	With a rich set of features and functionalities, acurl elevates the testing experience by providing enhanced capabilities for HTTP request handling, response interpretation, and performance evaluation.`,
-
+	Long:  `hcurl, short for "HTTP cURL", stands as a simple command-line utility designed with a primary focus on the testing and analysis of http(s) url endpoints`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("This is hcurl")
+		fmt.Println("This is hcurl. Run `hcurl -h` for more info")
 	},
 }
 
@@ -60,6 +56,6 @@ func init() {
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	// rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-	rootCmd.PersistentFlags().IntVarP(&n, "n", "n", 1, "Number of requests to send")
+	rootCmd.PersistentFlags().IntVarP(&n, "count", "n", 1, "Number of requests to send")
 	rootCmd.PersistentFlags().StringVarP(&headers, "header", "H", "", "Pass headers here. Ex:- \"Content-Type: application/json, Authorization: Bearer xxx, x-api-key: xxxx\" etc")
 }

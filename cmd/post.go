@@ -81,7 +81,7 @@ var postCmd = &cobra.Command{
 
 				respBody, err := io.ReadAll(response.Body)
 
-				fmt.Printf("Response status: %s\n Response Body: %s\n", response.Status, string(respBody))
+				fmt.Printf("Response status: %s\nResponse Body: %s\n", response.Status, string(respBody))
 			}()
 		}
 		wg.Wait()
@@ -101,5 +101,5 @@ func init() {
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// postCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-	postCmd.Flags().StringVarP(&body, "request-body", "b", "", "Pass request body of type json either in single quotes or pass the json file path starting with @")
+	postCmd.Flags().StringVarP(&body, "body", "b", "", "Pass request body of type json either in single quotes or pass the json file path starting with @")
 }

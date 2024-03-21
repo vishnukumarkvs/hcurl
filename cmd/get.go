@@ -63,7 +63,7 @@ var getCmd = &cobra.Command{
 
 				respBody, err := io.ReadAll(response.Body)
 
-				fmt.Printf("Response status: %s\n Response Body: %s\n", response.Status, string(respBody))
+				fmt.Printf("Response status: %s\nResponse Body: %s\n", response.Status, string(respBody))
 			}()
 		}
 
