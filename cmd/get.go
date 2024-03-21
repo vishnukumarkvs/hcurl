@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strings"
 	"sync"
 
 	"github.com/spf13/cobra"
@@ -31,20 +32,38 @@ var getCmd = &cobra.Command{
 		for i := 0; i < n; i++ {
 			go func() {
 				defer wg.Done()
-				resp, err := http.Get(url)
+				req, err := http.NewRequest("GET", url, nil)
 				if err != nil {
-					fmt.Printf("Error %s:\n", err)
-				}
-				defer resp.Body.Close()
-
-				body, err := io.ReadAll(resp.Body)
-				if err != nil {
-					fmt.Println("Error reading response")
+					fmt.Println("Error creating request:", err)
 					return
 				}
 
-				fmt.Printf("Status : %d\n", resp.StatusCode)
-				fmt.Printf("Body : %s\n", string(body))
+				req.Header.Set("Content-Type", "application/json")
+
+				headers := strings.Split(headers, ",")
+				for _, h := range headers {
+					h = strings.TrimSpace(h)
+					parts := strings.SplitN(h, ":", 2)
+					if len(parts) == 2 {
+						key := strings.TrimSpace(parts[0])
+						value := strings.TrimSpace(parts[1])
+						req.Header.Set(key, value)
+					}
+				}
+
+				client := &http.Client{}
+
+				response, err := client.Do(req)
+				if err != nil {
+					fmt.Println("Not able to send request: ", err)
+					return
+				}
+
+				defer response.Body.Close()
+
+				respBody, err := io.ReadAll(response.Body)
+
+				fmt.Printf("Response status: %s\n Response Body: %s\n", response.Status, string(respBody))
 			}()
 		}
 

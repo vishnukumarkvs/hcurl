@@ -21,6 +21,11 @@ var postCmd = &cobra.Command{
 	Use:   "post [URL]",
 	Short: "Make a POST request to the specified URL",
 	Run: func(cmd *cobra.Command, args []string) {
+		if len(args) < 1 {
+			fmt.Println("Please provide the url")
+			return
+		}
+
 		url := args[0]
 
 		var requestBody []byte
