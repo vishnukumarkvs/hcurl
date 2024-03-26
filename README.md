@@ -5,7 +5,7 @@ hcurl is a command-line tool primarily designed for testing HTTP and HTTPS endpo
 
 ## Installation
 
-1. Visit the GitHub Releases page to download the latest version of hcurl for your specific operating system.
+1. Visit the [GitHub Releases](https://github.com/vishnukumarkvs/hcurl/releases) page to download the latest version of hcurl for your specific operating system.
 
 2. Extract the downloaded archive.
 
